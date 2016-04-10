@@ -2,8 +2,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import org.junit.Test;
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class KeyEventHandlerTest {
 
@@ -34,7 +33,6 @@ public class KeyEventHandlerTest {
         KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
         KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
         keyEventHandler.handle(keyEventA);
-        assertEquals("A", keyEventHandler.getText());
         assertTrue("A".equals(keyEventHandler.getText()));
         keyEventHandler.handle(keyEventB);
         assertTrue("AB".equals(keyEventHandler.getText()));
@@ -48,9 +46,9 @@ public class KeyEventHandlerTest {
         KeyEvent backspace = new KeyEvent(KeyEvent.KEY_TYPED, "\b", "", KeyCode.UNDEFINED, false, false, false, false);
         KeyEvent delete = new KeyEvent(KeyEvent.KEY_TYPED, "\u007F", "", KeyCode.UNDEFINED, false, false, false, false);
         keyEventHandler.handle(backspace);
-        assertEquals("", keyEventHandler.getText());
+        assertTrue("".equals(keyEventHandler.getText()));
         keyEventHandler.handle(delete);
-        assertEquals("", keyEventHandler.getText());
+        assertTrue("".equals(keyEventHandler.getText()));
     }
 
 }
