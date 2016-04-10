@@ -1,28 +1,25 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.VPos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
-
+/* Understands how to react upon different key press or key type */
 public class KeyEventHandler implements EventHandler<KeyEvent> {
 
+    private StringBuilder displayString;
 
-    @Override
-    public void handle(KeyEvent event) {
-
+    public KeyEventHandler() {
+        displayString = new StringBuilder();
     }
 
+    @Override
+    public void handle(KeyEvent keyEvent) {
+        if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
+            String charTyped = keyEvent.getCharacter();
+            displayString.append(charTyped);
+        }
+    }
+
+    public String getText() {
+        return displayString.toString();
+    }
 
 }
