@@ -14,7 +14,11 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
             String charTyped = keyEvent.getCharacter();
-            displayString.append(charTyped);
+            // Ignore backspace and delete key
+            if (charTyped.charAt(0) != 8) {
+                displayString.append(charTyped);
+            }
+
         }
     }
 

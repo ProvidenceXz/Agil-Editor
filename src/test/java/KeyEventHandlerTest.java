@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class KeyEventHandlerTest {
@@ -24,7 +25,7 @@ public class KeyEventHandlerTest {
     }
 
     @Test
-    public void letterAShouldBeDisplayedWhenKeyAWasTyped() {
+    public void letter_abc_ShouldBeDisplayedWhenKey_abc_WasTyped() {
         KeyEventHandler keyEventHandler = new KeyEventHandler();
         KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "a", "", KeyCode.UNDEFINED, false, false, false, false);
         KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "b", "", KeyCode.UNDEFINED, false, false, false, false);
@@ -35,6 +36,32 @@ public class KeyEventHandlerTest {
         assertTrue("ab".equals(keyEventHandler.getText()));
         keyEventHandler.handle(keyEventC);
         assertTrue("abc".equals(keyEventHandler.getText()));
+    }
+
+    @Test
+    public void letter_ABC_ShouldBeDisplayedWhenKey_abc_WasTypedAndShiftWasPressed() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
+        keyEventHandler.handle(keyEventA);
+        assertEquals("A", keyEventHandler.getText());
+        assertTrue("A".equals(keyEventHandler.getText()));
+        keyEventHandler.handle(keyEventB);
+        assertTrue("AB".equals(keyEventHandler.getText()));
+        keyEventHandler.handle(keyEventC);
+        assertTrue("ABC".equals(keyEventHandler.getText()));
+    }
+
+    @Test
+    public void deleteKeyAndBackspaceKeyShouldBeIgnoredAsCharacter() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent backspace = new KeyEvent(KeyEvent.KEY_TYPED, "\b", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent delete = new KeyEvent(KeyEvent.KEY_TYPED, "\u007F", "", KeyCode.UNDEFINED, false, false, false, false);
+        keyEventHandler.handle(backspace);
+        assertEquals("", keyEventHandler.getText());
+        keyEventHandler.handle(delete);
+        assertEquals("", keyEventHandler.getText());
     }
 
 }
