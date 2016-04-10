@@ -15,9 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/**
- * Created by ProvidenceXz on 4/9/2016.
- */
+
 public class KeyEventHandler implements EventHandler<KeyEvent> {
 
 

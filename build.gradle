@@ -1,0 +1,16 @@
+group 'pro.provi'
+version '0.1'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: "org.loadui", name: "testFx", version: "3.1.2"
+}
+
