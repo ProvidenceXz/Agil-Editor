@@ -48,7 +48,7 @@ public class KeyEventHandlerTest {
         keyEventHandler.handle(backspace);
         assertTrue("".equals(keyEventHandler.getText()));
         keyEventHandler.handle(delete);
-        assertTrue("".equals(keyEventHandler.getText()));
+        assertEquals("", keyEventHandler.getText());
     }
 
 }

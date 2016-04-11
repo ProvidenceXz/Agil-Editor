@@ -15,7 +15,8 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
         if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
             String charTyped = keyEvent.getCharacter();
             // Ignore backspace and delete key
-            if (charTyped.charAt(0) != 8) {
+            if (charTyped.charAt(0) != '\b' && charTyped.charAt(0) != '\u007F') {
+                System.out.println(charTyped.charAt(0));
                 displayString.append(charTyped);
             }
 
