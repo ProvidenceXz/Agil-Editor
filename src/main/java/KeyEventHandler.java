@@ -1,4 +1,5 @@
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -29,16 +30,13 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
             String charTyped = keyEvent.getCharacter();
             // Ignore backspace and delete key
             if (charTyped.charAt(0) != '\b' && charTyped.charAt(0) != '\u007F') {
-                System.out.println(charTyped.charAt(0));
                 displayString.append(charTyped);
                 keyEvent.consume();
                 if (displayText != null) {
                     displayText.setText(getText());
                     updateText();
                 }
-
             }
-
         }
     }
 
