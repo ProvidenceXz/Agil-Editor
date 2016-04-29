@@ -32,16 +32,14 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
             if (charTyped.charAt(0) != '\b' && charTyped.charAt(0) != '\u007F') {
                 displayString.append(charTyped);
                 keyEvent.consume();
-                if (displayText != null) {
-                    displayText.setText(getText());
-                    updateText();
-                }
+                updateText();
             }
         } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
             KeyCode code = keyEvent.getCode();
             // Delete the last character if length > 0
             if (code == KeyCode.BACK_SPACE) {
                 displayString.setLength(Math.max(displayString.length() - 1, 0));
+                updateText();
             }
         }
     }
@@ -51,6 +49,9 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     }
 
     private void updateText() {
+        if (displayText == null) return; // If this handler is not for display Text, ignore
+
+        displayText.setText(getText());
         displayText.setX(startingPositionX);
         displayText.setY(startingPositionY);
 
