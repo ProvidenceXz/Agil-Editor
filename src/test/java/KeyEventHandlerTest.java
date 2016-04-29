@@ -66,4 +66,19 @@ public class KeyEventHandlerTest {
         assertTrue("A".equals(keyEventHandler.getText()));
     }
 
+    @Test
+    public void newlineShouldBeInsertedWhenKey_ENTER_WasTyped() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
+        keyEventHandler.handle(keyEventA);
+        keyEventHandler.handle(keyEventB);
+        keyEventHandler.handle(keyEventC);
+        assertTrue("ABC".equals(keyEventHandler.getText()));
+        KeyEvent enter = new KeyEvent(KeyEvent.KEY_TYPED, "\n", "", KeyCode.ENTER, false, false, false, false);
+        keyEventHandler.handle(enter);
+        assertTrue("ABC\n".equals(keyEventHandler.getText()));
+    }
+
 }
