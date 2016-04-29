@@ -37,6 +37,12 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
                     updateText();
                 }
             }
+        } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+            KeyCode code = keyEvent.getCode();
+            // Delete the last character if length > 0
+            if (code == KeyCode.BACK_SPACE) {
+                displayString.setLength(Math.max(displayString.length() - 1, 0));
+            }
         }
     }
 
