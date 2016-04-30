@@ -1,4 +1,7 @@
+import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
@@ -9,6 +12,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
 
     private StringBuilder displayString;
     private Text displayText;
+    private String clipboardContent;
 
     private int startingPositionX;
     private int startingPositionY;
@@ -48,6 +52,22 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
                 updateText();
             } else if (code == KeyCode.ENTER) {
                 updateText();
+            } else if (keyEvent.isShortcutDown()) {
+                if (keyEvent.getCode() == KeyCode.V) {
+                    try {
+                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                        String stringContent = clipboard.getString();
+                        displayString.append(stringContent);
+                        updateText();
+                    } catch (Exception e) {
+                        if (clipboardContent != null) {
+                            displayString.append(clipboardContent);
+                            updateText();
+                        } else {
+                            throw new RuntimeException("Clipboard was not correctly read");
+                        }
+                    }
+                }
             }
         }
     }
@@ -80,4 +100,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
         displayText.toFront();
     }
 
+    public void passClipboardContent(String content) {
+        clipboardContent = content;
+    }
 }

@@ -1,7 +1,12 @@
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import static javafx.application.Application.launch;
 import static org.junit.Assert.*;
 
 public class KeyEventHandlerTest {
@@ -28,9 +33,9 @@ public class KeyEventHandlerTest {
     @Test
     public void letter_ABC_ShouldBeDisplayedWhenKey_abc_WasTypedAndShiftWasPressed() {
         KeyEventHandler keyEventHandler = new KeyEventHandler();
-        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, false, false, false, false);
         keyEventHandler.handle(keyEventA);
         assertTrue("A".equals(keyEventHandler.getText()));
         keyEventHandler.handle(keyEventB);
@@ -53,9 +58,9 @@ public class KeyEventHandlerTest {
     @Test
     public void letter_A_ShouldBeDisplayedWhenKey_abc_WasTypedAndBackspaceWasPressedTwice() {
         KeyEventHandler keyEventHandler = new KeyEventHandler();
-        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, false, false, false, false);
         keyEventHandler.handle(keyEventA);
         keyEventHandler.handle(keyEventB);
         keyEventHandler.handle(keyEventC);
@@ -69,9 +74,9 @@ public class KeyEventHandlerTest {
     @Test
     public void newlineShouldBeInsertedWhenKey_ENTER_WasTyped() {
         KeyEventHandler keyEventHandler = new KeyEventHandler();
-        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, true, false, false, false);
-        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, true, false, false, false);
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, false, false, false, false);
         keyEventHandler.handle(keyEventA);
         keyEventHandler.handle(keyEventB);
         keyEventHandler.handle(keyEventC);
@@ -79,6 +84,17 @@ public class KeyEventHandlerTest {
         KeyEvent enter = new KeyEvent(KeyEvent.KEY_TYPED, "\n", "", KeyCode.ENTER, false, false, false, false);
         keyEventHandler.handle(enter);
         assertTrue("ABC\n".equals(keyEventHandler.getText()));
+    }
+
+    @Test
+    public void letter_ABC_ShouldBeDisplayedWhenClipboardWasPasted() {
+
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        String content = "ABC";
+        keyEventHandler.passClipboardContent(content);
+        KeyEvent paste = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.V, false, true, false, false);
+        keyEventHandler.handle(paste);
+        assertTrue("ABC".equals(keyEventHandler.getText()));
     }
 
 }
