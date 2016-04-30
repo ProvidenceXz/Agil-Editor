@@ -23,7 +23,6 @@ public class Editor extends Application {
     private static final int fontSize = 20;
     private static final String fontName = "Consolas";
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();

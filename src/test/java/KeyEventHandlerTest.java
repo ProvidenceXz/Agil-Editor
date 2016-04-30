@@ -88,13 +88,62 @@ public class KeyEventHandlerTest {
 
     @Test
     public void letter_ABC_ShouldBeDisplayedWhenClipboardWasPasted() {
-
         KeyEventHandler keyEventHandler = new KeyEventHandler();
         String content = "ABC";
         keyEventHandler.passClipboardContent(content);
         KeyEvent paste = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.V, false, true, false, false);
         keyEventHandler.handle(paste);
         assertTrue("ABC".equals(keyEventHandler.getText()));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void exceptionShouldBeThrowIfClipboardCouldNotBeRead() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        keyEventHandler.passClipboardContent(null);
+        KeyEvent paste = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.V, false, true, false, false);
+        keyEventHandler.handle(paste);
+    }
+
+    @Test
+    public void shortcutKeyAnd_A_ShouldSelectAllText() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, false, false, false, false);
+        keyEventHandler.handle(keyEventA);
+        keyEventHandler.handle(keyEventB);
+        keyEventHandler.handle(keyEventC);
+        assertTrue("ABC".equals(keyEventHandler.getText()));
+        KeyEvent selectAll = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.A, false, true, false, false);
+        keyEventHandler.handle(selectAll);
+        assertTrue("ABC".equals(keyEventHandler.getSelectedText()));
+    }
+
+    @Test
+    public void emptyStringShouldBeReturnedInsteadOfExceptionIfThereIsNoContent() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent selectAll = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.A, false, true, false, false);
+        keyEventHandler.handle(selectAll);
+        assertTrue("".equals(keyEventHandler.getSelectedText()));
+    }
+
+    @Test
+    public void allContentShouldBeDeletedIfSelectAllThenBackspaceWasPressed() {
+        KeyEventHandler keyEventHandler = new KeyEventHandler();
+        KeyEvent keyEventA = new KeyEvent(KeyEvent.KEY_TYPED, "A", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventB = new KeyEvent(KeyEvent.KEY_TYPED, "B", "", KeyCode.UNDEFINED, false, false, false, false);
+        KeyEvent keyEventC = new KeyEvent(KeyEvent.KEY_TYPED, "C", "", KeyCode.UNDEFINED, false, false, false, false);
+        keyEventHandler.handle(keyEventA);
+        keyEventHandler.handle(keyEventB);
+        keyEventHandler.handle(keyEventC);
+        assertTrue("ABC".equals(keyEventHandler.getText()));
+        KeyEvent selectAll = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.A, false, true, false, false);
+        keyEventHandler.handle(selectAll);
+        assertTrue("ABC".equals(keyEventHandler.getSelectedText()));
+        KeyEvent backspace = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.BACK_SPACE, false, false, false, false);
+        keyEventHandler.handle(backspace);
+        assertTrue("".equals(keyEventHandler.getText()));
+        assertTrue("".equals(keyEventHandler.getSelectedText()));
     }
 
 }

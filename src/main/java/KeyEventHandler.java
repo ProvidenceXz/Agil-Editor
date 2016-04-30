@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 public class KeyEventHandler implements EventHandler<KeyEvent> {
 
     private StringBuilder displayString;
+    private StringBuilder selectedString;
     private Text displayText;
     private String clipboardContent;
 
@@ -48,12 +49,20 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
             KeyCode code = keyEvent.getCode();
             // Delete the last character if length > 0
             if (code == KeyCode.BACK_SPACE) {
+                if (selectedString != null && selectedString.toString().equals(getText())) {
+                    selectedString = new StringBuilder("");
+                    displayString = new StringBuilder("");
+                    updateText();
+                }
                 displayString.setLength(Math.max(displayString.length() - 1, 0));
                 updateText();
             } else if (code == KeyCode.ENTER) {
                 updateText();
             } else if (keyEvent.isShortcutDown()) {
-                if (keyEvent.getCode() == KeyCode.V) {
+                if (keyEvent.getCode() == KeyCode.A) {
+                    selectedString = new StringBuilder(displayString);
+                    updateText();
+                } else if (keyEvent.getCode() == KeyCode.V) {
                     try {
                         Clipboard clipboard = Clipboard.getSystemClipboard();
                         String stringContent = clipboard.getString();
@@ -102,5 +111,12 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
 
     public void passClipboardContent(String content) {
         clipboardContent = content;
+    }
+
+    public String getSelectedText() {
+        if (selectedString == null) {
+            return "";
+        }
+        return selectedString.toString();
     }
 }
